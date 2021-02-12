@@ -1,0 +1,100 @@
+object ServerForm: TServerForm
+  Left = 240
+  Top = 240
+  BorderStyle = Single
+  Caption = 'Server'
+  ClientHeight = 565
+  ClientWidth = 302
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  Left = 240
+  Top = 240
+  DesignerMasterStyle = 0
+  object IPLabel: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 8.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 15.000000000000000000
+    TextSettings.HorzAlign = Trailing
+    Text = 'IP:'
+    TabOrder = 1
+  end
+  object PortLabel: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 8.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 15.000000000000000000
+    TextSettings.HorzAlign = Trailing
+    Text = 'Port:'
+    TabOrder = 2
+  end
+  object IPEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 4
+    Text = '127.0.0.1'
+    Position.X = 104.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object PortEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Text = '50000'
+    Position.X = 104.000000000000000000
+    Position.Y = 56.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object StartedCheckBox: TCheckBox
+    CanFocus = False
+    HitTest = False
+    Position.X = 96.000000000000000000
+    Position.Y = 104.000000000000000000
+    TabOrder = 5
+    Text = 'Server started'
+  end
+  object StartButton: TButton
+    Position.X = 74.000000000000000000
+    Position.Y = 138.000000000000000000
+    Size.Width = 154.000000000000000000
+    Size.Height = 43.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'Start'
+    OnClick = StartButtonClick
+  end
+  object MsgMemo: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 16.000000000000000000
+    Position.Y = 280.000000000000000000
+    Size.Width = 273.000000000000000000
+    Size.Height = 273.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Viewport.Width = 269.000000000000000000
+    Viewport.Height = 269.000000000000000000
+  end
+  object StopButton: TButton
+    Position.X = 74.000000000000000000
+    Position.Y = 210.000000000000000000
+    Size.Width = 154.000000000000000000
+    Size.Height = 43.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Stop'
+    OnClick = StopButtonClick
+  end
+end
