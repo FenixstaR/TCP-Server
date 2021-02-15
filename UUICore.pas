@@ -1,8 +1,8 @@
-unit UUI;
+unit UUICore;
 
 interface
 type
-  IUI = interface
+  IUICore = interface
     procedure ShowMessage(AMessage: string);
   end;
 

@@ -1,31 +1,17 @@
 unit UServer;
 
 interface
+
 uses
-  UUI,
+  UConnectedClient,
   System.SysUtils,
   System.Types,
   System.Classes,
   System.Threading,
   System.Net.Socket,
   System.Generics.Collections;
+
 type
-  TDelegate = reference to procedure(AMessage: string);
-
-  TConnectedClient = class
-    strict private
-      Socket: TSocket;
-      FHandle: TProc<string>;
-      procedure CallBack(const ASyncResult: IAsyncResult);
-      procedure StartReceive;
-    public
-      property Handle: TProc<string> read FHandle write FHandle;
-      function Connected: Boolean;
-      procedure SendMessage(const AMessage: string);
-      constructor Create(ASocket: TSocket);
-      destructor Destroy;
-  end;
-
   TServer = class
   strict private
     FAcceptHandle: TProc<TConnectedClient>;
@@ -33,65 +19,13 @@ type
     procedure AcceptCallback(const ASyncResult: IAsyncResult);
   public
     property AcceptHandle: TProc<TConnectedClient> read FAcceptHandle write FAcceptHandle;
-    procedure Start;
+    procedure Start(const AIP: string = '127.0.0.1';APort: Word = 20000);
+    procedure Stop;
     constructor Create;
     destructor Destroy;
   end;
 
-  TNetCore = class
-  private
-    Server: TServer;
-    ConnectedClients: TArray<TConnectedClient>;
-    MonitorConnectedClients: TMonitor;
-    FUI: IUI;
-    procedure SendToUI(AMsg: string);
-  public
-    property UI: IUI read FUI write FUI;
-    procedure Start;
-    constructor Create(AUI: IUI);
-    destructor Destroy;
-  end;
-
 implementation
-
-{$REGION 'TConnectedClient'}
-
-constructor TConnectedClient.Create(ASocket: TSocket);
-begin
-  Socket := ASocket;
-  StartReceive;
-end;
-
-destructor TConnectedClient.Destroy;
-begin
-  Socket.Close(Connected);
-  Socket.Destroy;
-end;
-
-procedure TConnectedClient.CallBack(const ASyncResult: IAsyncResult);
-var
-  Msg: TArray<Byte>;
-begin
-  Msg := Socket.EndReceiveBytes(ASyncResult);
-  Handle(TEncoding.UTF8.GetString(MSG));
-  StartReceive;
-end;
-
-procedure TConnectedClient.SendMessage(const AMessage: string);
-begin
-  Socket.Send(AMessage);
-end;
-
-procedure TConnectedClient.StartReceive;
-begin
-  Socket.BeginReceive(CallBack);
-end;
-
-function TConnectedClient.Connected: Boolean;
-begin
-  Result := TSocketState.Connected in Socket.State;
-end;
-{$ENDREGION}
 
 {$REGION 'TServer'}
 
@@ -102,19 +36,28 @@ end;
 
 destructor TServer.Destroy;
 begin
-  Socket.Free;
+  Try
+    Socket.Close(True);
+  Finally
+    Socket.Free;
+  End;
 end;
 
-
-procedure TServer.Start;
+procedure TServer.Start(const AIP: string = '127.0.0.1';APort: Word = 20000);
 begin
-  Socket.Listen('127.0.0.1','',50000);
+  Socket.Listen(AIP,'',APort);
   Socket.BeginAccept(AcceptCallback,100);
+end;
+
+procedure TServer.Stop;
+begin
+  if TSocketState.Connected in Socket.State then
+    Socket.Close(True)
 end;
 
 procedure TServer.AcceptCallback(const ASyncResult: IAsyncResult);
 var
-  sock: TSocket;
+  Sock: TSocket;
   cli: TConnectedClient;
 begin
   sock := nil;
@@ -128,35 +71,5 @@ begin
 end;
 {$ENDREGION}
 
-{$REGION 'TNetCore'}
-
-constructor TNetCore.Create(AUI: IUI);
-begin
-  SetLength(ConnectedClients,0);
-  Server := TServer.Create;
-  FUI := AUI;
-  Server.AcceptHandle := (procedure (ConnectedCli: TConnectedClient)
-  begin
-    ConnectedCli.Handle := SendToUI;
-    ConnectedClients := ConnectedClients + [ConnectedCli];
-  end);
-  Server.Start;
-end;
-
-destructor TNetCore.Destroy;
-begin
-  SetLength(ConnectedClients,0);
-end;
-
-procedure TNetCore.SendToUI(AMsg: string);
-begin
-  FUI.ShowMessage(AMsg);
-end;
-
-procedure TNetCore.Start;
-begin
-  Server.Start;
-end;
-{$ENDREGION}
 
 end.

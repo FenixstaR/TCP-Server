@@ -9,7 +9,6 @@ object ServerForm: TServerForm
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnCreate = FormCreate
   Left = 240
   Top = 240
   DesignerMasterStyle = 0
@@ -73,7 +72,6 @@ object ServerForm: TServerForm
     Size.PlatformDefault = False
     TabOrder = 7
     Text = 'Start'
-    OnClick = StartButtonClick
   end
   object MsgMemo: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -95,6 +93,5 @@ object ServerForm: TServerForm
     Size.PlatformDefault = False
     TabOrder = 6
     Text = 'Stop'
-    OnClick = StopButtonClick
   end
 end

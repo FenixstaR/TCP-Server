@@ -3,9 +3,13 @@ program ServerProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Server in 'Server.pas' {ServerForm},
+  UNetCore in 'UNetCore.pas',
+  UUICore in 'UUICore.pas',
+  IHandlerCore in 'IHandlerCore.pas',
   UServer in 'UServer.pas',
-  UUI in 'UUI.pas';
+  UConnectedClient in 'UConnectedClient.pas',
+  Server in 'Server.pas' {ServerForm},
+  TestUConnectedClient in 'AutoTests\TestUConnectedClient.pas';
 
 {$R *.res}
 
