@@ -1,7 +1,6 @@
-unit UConnectedClient;
+unit UClient;
 
 interface
-
 uses
   System.SysUtils,
   System.Types,
@@ -10,9 +9,8 @@ uses
   System.Net.Socket,
   System.Generics.Collections,
   UAbstractClient;
-
 type
-  TConnectedClient = class(TBaseTCPClient)
+  TClient = class(TBaseTCPClient)
   strict private
     Socket: TSocket;
     FHandle: TProc<TBytes>;
@@ -27,27 +25,22 @@ type
 
 implementation
 
-{$REGION 'TConnectedClient'}
-
-constructor TConnectedClient.Create(ASocket: TSocket);
+constructor TClient.Create(ASocket: TSocket);
 begin
-  Socket := ASocket;
+  Socket := TSocket.Create(TSocketType.TCP,TEncoding.UTF8);
   DataSize := 0;
   SetLength(Data,DataSize);
   StartReceive;
 end;
 
-procedure TConnectedClient.Disconnect;
+procedure TClient.Disconnect;
 begin
   Socket.Close(True);
 end;
 
-procedure TConnectedClient.Connect(const AIP: string; APort: Word);
+procedure TClient.Connect(const AIP: string; APort: Word);
 begin
-  //
+  Socket.Connect('',AIP,'',APort);
 end;
-
-{$ENDREGION}
-
 
 end.

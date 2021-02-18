@@ -15,11 +15,11 @@ type
   TNetCore = class
   private
     Server: TServer;
-    ConnectedClients: TArray<TConnectedClient>;
     MonitorConnectedClients: TMonitor;
     FHandler: IBaseHandler;
     procedure Handle(AData: TBytes);
   public
+    ConnectedClients: TArray<TConnectedClient>;
     property Handler: IBaseHandler read FHandler write FHandler;
     procedure Start;
     procedure Stop;
@@ -28,6 +28,7 @@ type
   end;
 
 implementation
+
 {$REGION 'TNetCore'}
 
 constructor TNetCore.Create(AHandler: IBaseHandler);

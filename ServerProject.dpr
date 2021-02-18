@@ -9,7 +9,9 @@ uses
   UServer in 'UServer.pas',
   UConnectedClient in 'UConnectedClient.pas',
   Server in 'Server.pas' {ServerForm},
-  TestUConnectedClient in 'AutoTests\TestUConnectedClient.pas';
+  TestUConnectedClient in 'AutoTests\TestUConnectedClient.pas',
+  UAbstractClient in 'UAbstractClient.pas',
+  UClient in 'UClient.pas';
 
 {$R *.res}
 
