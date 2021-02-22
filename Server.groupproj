@@ -6,7 +6,13 @@
         <Projects Include="ServerProject.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Test\ServerProjectTests.dproj">
+        <Projects Include="Test\ServerTests.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ConsoleServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Example\Example.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +32,41 @@
     <Target Name="ServerProject:Make">
         <MSBuild Projects="ServerProject.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ServerProjectTests">
-        <MSBuild Projects="Test\ServerProjectTests.dproj"/>
+    <Target Name="ServerTests">
+        <MSBuild Projects="Test\ServerTests.dproj"/>
     </Target>
-    <Target Name="ServerProjectTests:Clean">
-        <MSBuild Projects="Test\ServerProjectTests.dproj" Targets="Clean"/>
+    <Target Name="ServerTests:Clean">
+        <MSBuild Projects="Test\ServerTests.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ServerProjectTests:Make">
-        <MSBuild Projects="Test\ServerProjectTests.dproj" Targets="Make"/>
+    <Target Name="ServerTests:Make">
+        <MSBuild Projects="Test\ServerTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ConsoleServer">
+        <MSBuild Projects="ConsoleServer.dproj"/>
+    </Target>
+    <Target Name="ConsoleServer:Clean">
+        <MSBuild Projects="ConsoleServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ConsoleServer:Make">
+        <MSBuild Projects="ConsoleServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Example">
+        <MSBuild Projects="Example\Example.dproj"/>
+    </Target>
+    <Target Name="Example:Clean">
+        <MSBuild Projects="Example\Example.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Example:Make">
+        <MSBuild Projects="Example\Example.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ServerProject;ServerProjectTests"/>
+        <CallTarget Targets="ServerProject;ServerTests;ConsoleServer;Example"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ServerProject:Clean;ServerProjectTests:Clean"/>
+        <CallTarget Targets="ServerProject:Clean;ServerTests:Clean;ConsoleServer:Clean;Example:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ServerProject:Make;ServerProjectTests:Make"/>
+        <CallTarget Targets="ServerProject:Make;ServerTests:Make;ConsoleServer:Make;Example:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

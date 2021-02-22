@@ -1,4 +1,4 @@
-program ServerProjectTests;
+program ServerTests;
 {
 
   Delphi DUnit Test Project
