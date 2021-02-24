@@ -183,9 +183,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="UCommandLineParser.pas"/>
-        <DCCReference Include="UHandlerResultComandLineParse.pas"/>
-        <DCCReference Include="Types.Base.pas"/>
+        <DCCReference Include="GlobalsVariable.pas"/>
+        <DCCReference Include="Abstractions.pas"/>
+        <DCCReference Include="ConsoleUI.pas"/>
+        <DCCReference Include="GUI.pas"/>
+        <DCCReference Include="App.Core.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
