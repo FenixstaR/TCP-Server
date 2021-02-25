@@ -13,7 +13,14 @@ uses
   GUI in 'AppCore\UICore\GUI.pas',
   UCommandLineParser in 'AppCore\UICore\UCommandLineParser.pas',
   UParserCommand in 'AppCore\UICore\UParserCommand.pas',
-  Types.UI in 'AppCore\UICore\Types.UI.pas';
+  Types.UI in 'AppCore\UICore\Types.UI.pas',
+  IHandlerCore in 'AppCore\NetCore\IHandlerCore.pas',
+  UAbstractClient in 'AppCore\NetCore\UAbstractClient.pas',
+  UClient in 'AppCore\NetCore\UClient.pas',
+  UConnectedClient in 'AppCore\NetCore\UConnectedClient.pas',
+  UNetCore in 'AppCore\NetCore\UNetCore.pas',
+  UServer in 'AppCore\NetCore\UServer.pas',
+  BlockChainCore in 'AppCore\BlockChain\BlockChainCore.pas';
 
 begin
   try
