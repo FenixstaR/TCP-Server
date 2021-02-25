@@ -6,24 +6,19 @@ uses
   System.TypInfo,
   System.SysUtils,
   System.Generics.Collections,
-  Types.Base;
+  Types.Base,
+  Types.UI;
 type
-  ICommand = interface
-    procedure Run;
-  end;
-
   TCommandLinePattern = class
     strict private
       FName: string;
-      FParametrs: TList<TPair<string,strings>>;
-      FDelegate: TProc<strings>;
-      function TryParse(Args: strings;out Return: ICommand): bool; virtual;
+      FParametrs: TParametrs;
+      function TryParse(Args: strings;out Return: TCommandData): bool; virtual;
     public
       property Name: string read FName write FName;
-      property Parametrs: TList<TPair<string,strings>> read FParametrs write FParametrs;
-      function HasParameter(const AValue: string; AOptions: strings): TCommandLinePattern;
-      function HasDelegate(ADelegate: TProc<strings>): TCommandLinePattern;
-      function Parse(args: strings): ICommand;virtual;
+      property Parametrs: TParametrs read FParametrs write FParametrs;
+      function HasParameter(const ANameParametr,AValue: string): TCommandLinePattern;
+      function Parse(args: strings): TCommandData;virtual;
       constructor Create(const AName: string);
       destructor Destroy; override;
   end;
@@ -48,36 +43,28 @@ end;
 constructor TCommandLinePattern.Create(const AName: string);
 begin
   FName := AName;
-  FParametrs := TList<TPair<string,strings>>.Create;
+  FParametrs := [];
 end;
 
 destructor TCommandLinePattern.Destroy;
 begin
   FName := string.Empty;
-
-  FParametrs.Clear;
-  FParametrs.Free;
   inherited;
 end;
 
-function TCommandLinePattern.HasParameter(const AValue: string; AOptions: strings): TCommandLinePattern;
+function TCommandLinePattern.HasParameter(const ANameParametr,AValue: string): TCommandLinePattern;
 var
-  Pair: TPair<string,strings>;
+  Parametr: TParametr;
 begin
-  Pair := TPair<string,strings>.Create(AValue, AOptions);
-  Self.Parametrs.Add(Pair);
+  Parametr.Name := ANameParametr;
+  Parametr.Value := AValue; 
+  FParametrs := FParametrs + [Parametr];
   Result := Self;
 end;
 
-function TCommandLinePattern.HasDelegate(ADelegate: TProc<strings>): TCommandLinePattern;
-begin
-  Self.FDelegate := ADelegate;
-  Result := Self;
-end;
-
-function TCommandLinePattern.Parse(args: strings): ICommand;
+function TCommandLinePattern.Parse(args: strings): TCommandData;
 var
-  Command: ICommand;
+  Command: TCommandData;
 begin
   try
     if TryParse(args,Command) then
@@ -88,13 +75,13 @@ begin
 
 end;
 
-function TCommandLinePattern.TryParse(Args: strings; out Return: ICommand): bool;
+function TCommandLinePattern.TryParse(Args: strings; out Return: TCommandData): bool;
 var
-  Value,Parametr,Option,Name: string;
+  Parametr: TParametr;
+  Name: string;
   i: int;
 begin
-  Return := nil;
-
+  Result := True;
   if Args.IsEmpty then
   begin
     Result := False;
@@ -107,16 +94,33 @@ begin
     exit;
   end;
 
+  Return.CommandName := TCommandsNames.AsCommand(FName);
   i := 1;
-  while i < Args.Length - 1 do
+  Parametr.Name := '';
+  Parametr.Value := '';
+  Return.Parametrs := [];
+  while i <= Args.Length - 1 do
   begin
-    if Args[i].StartsWith('-') then
+    if Parametr.Name = '' then
     begin
-      option := args[i]
+      if Args[i].StartsWith('-') then
+        Parametr.Name := args[i].Substring(1);
     end
     else
-      Parametr := args[i];
-
+    begin
+      if Args[i].StartsWith('-') then
+      begin  
+        Return.Parametrs := Return.Parametrs + [Parametr];
+        Parametr.Name := args[i].Substring(1);
+      end
+      else
+      begin
+        Parametr.Value := args[i].Substring(0); 
+        Return.Parametrs := Return.Parametrs + [Parametr];
+        Parametr.Name := '';
+        Parametr.Value := '';
+      end;
+    end;
     inc(i);
   end;
 end;

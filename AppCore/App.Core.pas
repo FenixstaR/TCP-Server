@@ -4,6 +4,7 @@ interface
 uses
   UCommandLineParser,
   Types.Base,
+  System.SysUtils,
   System.Classes,
   Abstractions,
   ConsoleUI,
@@ -14,6 +15,8 @@ type
   private
     isTerminate: bool;
     UI: TBaseUI;
+    {Procedures}
+    procedure AppException(Sender: TObject);
   public
     procedure Terminate;
     procedure DoRun;
@@ -34,7 +37,19 @@ begin
 {$IFDEF GUI}
   UI := TGUI.Create;
 {$ENDIF}
+  ApplicationHandleException := AppException;
   UI.ShowMessage := ShowMessage;
+end;
+
+procedure TAppCore.AppException(Sender: TObject);
+var O: TObject;
+begin
+  O:=ExceptObject;
+  if O is Exception then
+  begin
+    if not (O is EAbort) then ShowMessage(Exception(O).Message)
+  end else
+    System.SysUtils.ShowException(O,ExceptAddr);
 end;
 
 destructor TAppCore.Destroy;

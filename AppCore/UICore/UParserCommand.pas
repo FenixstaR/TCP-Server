@@ -6,50 +6,29 @@ uses
   System.TypInfo,
   System.SysUtils,
   System.Generics.Collections,
+  UCommandLineParser,
   Types.Base,
-  UCommandLineParser;
+  Types.UI;
 
 type
-  TCommands = (help, node);
-
-  TCommandsHelper = record helper for TCommands
-    class function InType(ACommand: string): bool; static;
-    class function AsCommand(ACommand: string): TCommands; static;
-  end;
-
   TCommandsParser = class
     private
       FDelegate: TProc<strings>;
-      Commands: TObjectDictionary<TCommands,TCommandLinePattern>;
+      Commands: TObjectDictionary<TCommandsNames,TCommandLinePattern>;
     public
-      procedure TryParse(const args: strings);
-      constructor Create(GeneralDelegate: TProc<strings>);
+      function TryParse(const args: strings): TCommandData;
+      constructor Create;
       destructor Destroy; override;
   end;
 implementation
 
 
-
-{$Region 'CommandsHelper'}
-
-class function TCommandsHelper.AsCommand(ACommand: string): TCommands;
-begin
-  Result := TCommands(GetEnumValue(TypeInfo(TCommands),ACommand));
-end;
-
-class function TCommandsHelper.InType(ACommand: string): bool;
-begin
-  Result := GetEnumValue(TypeInfo(TCommandsHelper),ACommand).ToBoolean;
-end;
-{$ENDREGION}
-
 {$Region 'TCommandsParser'}
 
-constructor TCommandsParser.Create(GeneralDelegate: TProc<strings>);
+constructor TCommandsParser.Create;
 begin
-  FDelegate := GeneralDelegate;
-  Commands := TObjectDictionary<TCommands,TCommandLinePattern>.Create;
-  Commands.Add(TCommands(0),TCommand.WithName('help').HasDelegate(FDelegate));
+  Commands := TObjectDictionary<TCommandsNames,TCommandLinePattern>.Create;
+  Commands.Add(TCommandsNames(0),TCommand.WithName('help').HasParameter('commandname',''));
 end;
 
 destructor TCommandsParser.Destroy;
@@ -58,21 +37,23 @@ begin
   inherited;
 end;
 
-procedure TCommandsParser.TryParse(const args: strings);
+function TCommandsParser.TryParse(const args: strings): TCommandData;
 var
   PatternCommand: TCommandLinePattern;
 begin
-  case TCommands.AsCommand(LowerCase(args[0])) of
-    TCommands.Help:
+  case TCommandsNames.AsCommand(LowerCase(args[0])) of
+    TCommandsNames.help:
     begin
-      if Commands.TryGetValue(TCommands.Help,PatternCommand) then
-        PatternCommand.Parse(args).Run;
+      if Commands.TryGetValue(TCommandsNames.Help,PatternCommand) then
+        Result := PatternCommand.Parse(args);
     end;
-    TCommands.node:
+    TCommandsNames.node:
     begin
-      if Commands.TryGetValue(TCommands.node,PatternCommand) then
-        PatternCommand.Parse(args).Run;
-    end;
+      if Commands.TryGetValue(TCommandsNames.node,PatternCommand) then
+        Result := PatternCommand.Parse(args);
+    end
+    else
+     TThread.Synchronize(TThread.Current,procedure begin Exception.Create('Error syntax command! No command with name: ' + quotedstr(args[0]))end);
   end;
 end;
 {$ENDREGION}

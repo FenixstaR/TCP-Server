@@ -2,12 +2,13 @@ unit ConsoleUI;
 
 interface
 uses
-  UCommandLineParser,
+  System.SysUtils,
   UParserCommand,
   Types.Base,
   System.Classes,
   Abstractions,
-  GUI;
+  GUI,
+  Types.UI;
 
 type
   TConsoleUI = class(TBaseUI)
@@ -20,18 +21,19 @@ type
   public
     procedure DoRun;
     procedure DoTerminate;
-    procedure DoCommand(Args: strings);
+    procedure RunCommand(Data: TCommandData);
     constructor Create; override;
     destructor Destroy; override;
   end;
 implementation
 
 {$REGION 'TConsoleUI'}
+
 constructor TConsoleUI.Create;
 begin
   inherited;
   isTerminate := False;
-  parser := TCommandsParser.Create(DoCommand);
+  parser := TCommandsParser.Create;
 end;
 
 destructor TConsoleUI.Destroy;
@@ -40,9 +42,16 @@ begin
   inherited;
 end;
 
-procedure TConsoleUI.DoCommand(Args: strings);
+procedure TConsoleUI.RunCommand(Data: TCommandData);
 begin
-
+  case Data.CommandName of
+    TCommandsNames.help:
+    begin
+    end;
+    TCommandsNames.node:
+    begin
+    end;
+  end;
 end;
 
 procedure TConsoleUI.DoRun;
@@ -50,11 +59,19 @@ var
   inputString: string;
   args: strings;
 begin
+  TThread.CreateAnonymousThread(procedure
+  begin
+    while not isTerminate do
+    begin
+      readln(inputString);
+      args.SetStrings(inputString);
+      RunCommand(parser.TryParse(args));
+    end;
+  end).Start;
+
   while not isTerminate do
   begin
-    readln(inputString);
-    args.SetStrings(inputString);
-    parser.TryParse(args);
+    CheckSynchronize(100);
   end;
 end;
 

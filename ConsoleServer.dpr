@@ -12,7 +12,8 @@ uses
   ConsoleUI in 'AppCore\UICore\ConsoleUI.pas',
   GUI in 'AppCore\UICore\GUI.pas',
   UCommandLineParser in 'AppCore\UICore\UCommandLineParser.pas',
-  UParserCommand in 'AppCore\UICore\UParserCommand.pas';
+  UParserCommand in 'AppCore\UICore\UParserCommand.pas',
+  Types.UI in 'AppCore\UICore\Types.UI.pas';
 
 begin
   try
