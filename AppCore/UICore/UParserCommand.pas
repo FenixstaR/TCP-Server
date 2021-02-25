@@ -1,6 +1,7 @@
 unit UParserCommand;
 
 interface
+
 uses
   System.Classes,
   System.TypInfo,
@@ -12,23 +13,24 @@ uses
 
 type
   TCommandsParser = class
-    private
-      FDelegate: TProc<strings>;
-      Commands: TObjectDictionary<TCommandsNames,TCommandLinePattern>;
-    public
-      function TryParse(const args: strings): TCommandData;
-      constructor Create;
-      destructor Destroy; override;
+  private
+    FDelegate: TProc<strings>;
+    Commands: TObjectDictionary<TCommandsNames, TCommandLinePattern>;
+  public
+    function TryParse(const args: strings): TCommandData;
+    constructor Create;
+    destructor Destroy; override;
   end;
+
 implementation
 
-
-{$Region 'TCommandsParser'}
+{$REGION 'TCommandsParser'}
 
 constructor TCommandsParser.Create;
 begin
-  Commands := TObjectDictionary<TCommandsNames,TCommandLinePattern>.Create;
-  Commands.Add(TCommandsNames(0),TCommand.WithName('help').HasParameter('commandname',''));
+  Commands := TObjectDictionary<TCommandsNames, TCommandLinePattern>.Create;
+  Commands.Add(TCommandsNames(0), TCommand.WithName('help')
+    .HasParameter('commandname', ''));
 end;
 
 destructor TCommandsParser.Destroy;
@@ -43,18 +45,24 @@ var
 begin
   case TCommandsNames.AsCommand(LowerCase(args[0])) of
     TCommandsNames.help:
-    begin
-      if Commands.TryGetValue(TCommandsNames.Help,PatternCommand) then
-        Result := PatternCommand.Parse(args);
-    end;
+      begin
+        if Commands.TryGetValue(TCommandsNames.help, PatternCommand) then
+          Result := PatternCommand.Parse(args);
+      end;
     TCommandsNames.node:
-    begin
-      if Commands.TryGetValue(TCommandsNames.node,PatternCommand) then
-        Result := PatternCommand.Parse(args);
-    end
-    else
-     TThread.Synchronize(TThread.Current,procedure begin raise Exception.Create('Error syntax command! No command with name: ' + quotedstr(args[0]))end);
+      begin
+        if Commands.TryGetValue(TCommandsNames.node, PatternCommand) then
+          Result := PatternCommand.Parse(args);
+      end
+  else
+    TThread.Synchronize(nil,
+      procedure
+      begin
+        raise Exception.Create('Error syntax command! No command with name: ' +
+          quotedstr(args[0]))
+      end);
   end;
 end;
 {$ENDREGION}
+
 end.

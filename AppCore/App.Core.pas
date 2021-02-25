@@ -65,7 +65,7 @@ end;
 
 procedure TAppCore.ShowMessage(AMessage: string);
 begin
-  TThread.Synchronize(TThread.CurrentThread,procedure begin WriteLn(AMessage)end);
+  TThread.Synchronize(nil,procedure begin WriteLn(AMessage)end);
 end;
 
 procedure TAppCore.Terminate;
