@@ -47,9 +47,19 @@ begin
   case Data.CommandName of
     TCommandsNames.help:
     begin
+      case TCommandsNames.AsCommand(Data.Parametrs[0].Name) of
+        TCommandsNames.node:
+        begin
+          ShowMessage('INFO: Node - command for work with node app.');
+        end;
+      end;
     end;
     TCommandsNames.node:
     begin
+    end;
+    TCommandsNames.check:
+    begin
+      ShowMessage('ECHO: check');
     end;
   end;
 end;

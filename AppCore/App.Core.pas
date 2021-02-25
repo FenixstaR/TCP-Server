@@ -1,6 +1,7 @@
 unit App.Core;
 
 interface
+
 uses
   UCommandLineParser,
   Types.Base,
@@ -11,11 +12,11 @@ uses
   GUI;
 
 type
-  TAppCore = class(TInterfacedObject,IAppCore)
+  TAppCore = class(TInterfacedObject, IAppCore)
   private
     isTerminate: bool;
     UI: TBaseUI;
-    {Procedures}
+    { Procedures }
     procedure AppException(Sender: TObject);
   public
     procedure Terminate;
@@ -42,14 +43,17 @@ begin
 end;
 
 procedure TAppCore.AppException(Sender: TObject);
-var O: TObject;
+var
+  O: TObject;
 begin
-  O:=ExceptObject;
+  O := ExceptObject;
   if O is Exception then
   begin
-    if not (O is EAbort) then ShowMessage(Exception(O).Message)
-  end else
-    System.SysUtils.ShowException(O,ExceptAddr);
+    if not(O is EAbort) then
+      ShowMessage(Exception(O).Message)
+  end
+  else
+    System.SysUtils.ShowException(O, ExceptAddr);
 end;
 
 destructor TAppCore.Destroy;
@@ -65,7 +69,11 @@ end;
 
 procedure TAppCore.ShowMessage(AMessage: string);
 begin
-  TThread.Synchronize(nil,procedure begin WriteLn(AMessage)end);
+  TThread.Synchronize(nil,
+    procedure
+    begin
+      WriteLn(AMessage)
+    end);
 end;
 
 procedure TAppCore.Terminate;

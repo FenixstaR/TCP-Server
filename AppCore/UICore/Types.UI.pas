@@ -9,7 +9,7 @@ uses
   Types.Base;
 
 type
-  TCommandsNames = (help, node);
+  TCommandsNames = (help, node,check);
   TCommandsHelper = record helper for TCommandsNames
     class function InType(ACommand: string): bool; static;
     class function AsCommand(ACommand: string): TCommandsNames; static;

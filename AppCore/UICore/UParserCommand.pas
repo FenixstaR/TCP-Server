@@ -29,8 +29,9 @@ implementation
 constructor TCommandsParser.Create;
 begin
   Commands := TObjectDictionary<TCommandsNames, TCommandLinePattern>.Create;
-  Commands.Add(TCommandsNames(0), TCommand.WithName('help')
-    .HasParameter('commandname', ''));
+  Commands.Add(TCommandsNames(0), TCommand.WithName('help').HasParameter('commandname', ''));
+  Commands.Add(TCommandsNames(1), TCommand.WithName('node').HasParameter('commandname', ''));
+  Commands.Add(TCommandsNames(2), TCommand.WithName('check').HasParameter('commandname', ''));
 end;
 
 destructor TCommandsParser.Destroy;
@@ -53,13 +54,17 @@ begin
       begin
         if Commands.TryGetValue(TCommandsNames.node, PatternCommand) then
           Result := PatternCommand.Parse(args);
-      end
+      end;
+    TCommandsNames.check:
+    begin
+      if Commands.TryGetValue(TCommandsNames.check, PatternCommand) then
+        Result := PatternCommand.Parse(args);
+    end
   else
-    TThread.Synchronize(nil,
+    TThread.Queue(nil,
       procedure
       begin
-        raise Exception.Create('Error syntax command! No command with name: ' +
-          quotedstr(args[0]))
+        raise Exception.Create('Error syntax command! No command with name: ' + quotedstr(args[0]))
       end);
   end;
 end;
