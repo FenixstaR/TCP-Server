@@ -2,6 +2,8 @@ unit App.Core;
 
 interface
 uses
+  UCommandLineParser,
+  Types.Base,
   System.Classes,
   Abstractions,
   ConsoleUI,
@@ -10,8 +12,10 @@ uses
 type
   TAppCore = class(TInterfacedObject,IAppCore)
   private
+    isTerminate: bool;
     UI: TBaseUI;
   public
+    procedure Terminate;
     procedure DoRun;
     procedure ShowMessage(AMessage: string);
     constructor Create;
@@ -24,7 +28,12 @@ implementation
 
 constructor TAppCore.Create;
 begin
+{$IFDEF CONSOLE}
   UI := TConsoleUI.Create;
+{$ENDIF}
+{$IFDEF GUI}
+  UI := TGUI.Create;
+{$ENDIF}
   UI.ShowMessage := ShowMessage;
 end;
 
@@ -36,15 +45,17 @@ end;
 
 procedure TAppCore.DoRun;
 begin
-  UI.ShowMessage('Hello World');
+  TConsoleUI(UI).DoRun;
 end;
 
 procedure TAppCore.ShowMessage(AMessage: string);
-var
-  str: string;
 begin
   WriteLn(AMessage);
-  ReadLn(str);
+end;
+
+procedure TAppCore.Terminate;
+begin
+  isTerminate := True;
 end;
 
 end.

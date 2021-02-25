@@ -19,8 +19,8 @@ type
     property ShowMessage: TProc<string> read FShowMessage write FShowMessage;
     procedure DoRun; virtual; abstract;
     procedure DoTerminate;virtual; abstract;
-    constructor Create;
-    destructor Destroy;
+    constructor Create; virtual;
+    destructor Destroy; virtual;
   end;
 
 implementation

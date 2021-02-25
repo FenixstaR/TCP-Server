@@ -12,7 +12,7 @@ uses
   TestUConnectedClient in 'AutoTests\TestUConnectedClient.pas',
   UAbstractClient in 'UAbstractClient.pas',
   UClient in 'UClient.pas';
-
+{$APPTYPE GUI}
 {$R *.res}
 
 begin
