@@ -53,7 +53,7 @@ begin
         Result := PatternCommand.Parse(args);
     end
     else
-     TThread.Synchronize(TThread.Current,procedure begin Exception.Create('Error syntax command! No command with name: ' + quotedstr(args[0]))end);
+     TThread.Synchronize(TThread.Current,procedure begin raise Exception.Create('Error syntax command! No command with name: ' + quotedstr(args[0]))end);
   end;
 end;
 {$ENDREGION}
