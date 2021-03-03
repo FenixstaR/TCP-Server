@@ -7,11 +7,11 @@ uses
   System.SysUtils,
   System.Hash;
 type
-  TKey = array [0..31] of Byte;
   TTransactionType = (RegestrationWallet);
 
   TIndexData = record
     Index: Int64;
+    Vesion: TVersion;
     Size: integer;
   end;
 
@@ -40,12 +40,42 @@ type
     Transaction: T;
     SignedIt: TBytes;
     Signature: TBytes;
+    ValidatorSignature: array of TBytes;
   end;
 
-  TChainBase<T: record> = record
+  TBaseBlock1<T:record> = record
+    Size: integer;
+    Header: TBlockHeader;
+    Transaction: T;
+    SignedIt: TBytes;
+    Signature: TBytes;
+    ValidatorSignature: array of TBytes;
+  end;
+
+
+  TChainBase<T,T1: record> = class
   private
-    Blocks: TArray<T>;
+    Name: string;
+    Path: string;
+    IndexFile:TIndexData;
+    ArrayOfIndexData: array of TIndexData;
   public
+    function GetBlock(Index: integer): T; overload;
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+  TChainBase1 = class
+  private
+    Name: string;
+    Path: string;
+    IndexFile:TIndexData;
+    BaseBlock:TBaseBlock;
+    BaseBlock1:TBaseBlock1;
+
+    ArrayOfIndexData: array of TIndexData;
+  public
+    function GetBlock(Index: integer): T; overload;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -59,16 +89,22 @@ implementation
 
 { TChainBase<T> }
 
-constructor TChainBase<T>.Create;
+{ TChainBase<T, T1> }
+
+constructor TChainBase<T, T1>.Create;
 begin
-  inherited;
 
 end;
 
-destructor TChainBase<T>.Destroy;
+destructor TChainBase<T, T1>.Destroy;
 begin
 
   inherited;
+end;
+
+function TChainBase<T, T1>.GetBlock(Index: integer): T;
+begin
+
 end;
 
 end.
