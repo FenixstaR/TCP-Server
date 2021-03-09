@@ -14,7 +14,6 @@ type
     PortLabel: TLabel;
     IPEdit: TEdit;
     PortEdit: TEdit;
-    StartedCheckBox: TCheckBox;
     StartButton: TButton;
     MsgMemo: TMemo;
     StopButton: TButton;

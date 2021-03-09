@@ -56,42 +56,34 @@ object ServerForm: TServerForm
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
   end
-  object StartedCheckBox: TCheckBox
-    CanFocus = False
-    HitTest = False
-    Position.X = 96.000000000000000000
-    Position.Y = 104.000000000000000000
-    TabOrder = 5
-    Text = 'Server started'
-  end
   object StartButton: TButton
     Position.X = 74.000000000000000000
-    Position.Y = 138.000000000000000000
+    Position.Y = 106.000000000000000000
     Size.Width = 154.000000000000000000
     Size.Height = 43.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Start'
   end
   object MsgMemo: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
     Position.X = 16.000000000000000000
-    Position.Y = 280.000000000000000000
+    Position.Y = 232.000000000000000000
     Size.Width = 273.000000000000000000
-    Size.Height = 273.000000000000000000
+    Size.Height = 321.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 7
     Viewport.Width = 269.000000000000000000
-    Viewport.Height = 269.000000000000000000
+    Viewport.Height = 317.000000000000000000
   end
   object StopButton: TButton
     Position.X = 74.000000000000000000
-    Position.Y = 210.000000000000000000
+    Position.Y = 170.000000000000000000
     Size.Width = 154.000000000000000000
     Size.Height = 43.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 5
     Text = 'Stop'
   end
 end
