@@ -15,6 +15,9 @@
         <Projects Include="Example\Example.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ClientProject.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="Example:Make">
         <MSBuild Projects="Example\Example.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ClientProject">
+        <MSBuild Projects="ClientProject.dproj"/>
+    </Target>
+    <Target Name="ClientProject:Clean">
+        <MSBuild Projects="ClientProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ClientProject:Make">
+        <MSBuild Projects="ClientProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ServerProject;ServerTests;ConsoleServer;Example"/>
+        <CallTarget Targets="ServerProject;ServerTests;ConsoleServer;Example;ClientProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ServerProject:Clean;ServerTests:Clean;ConsoleServer:Clean;Example:Clean"/>
+        <CallTarget Targets="ServerProject:Clean;ServerTests:Clean;ConsoleServer:Clean;Example:Clean;ClientProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ServerProject:Make;ServerTests:Make;ConsoleServer:Make;Example:Make"/>
+        <CallTarget Targets="ServerProject:Make;ServerTests:Make;ConsoleServer:Make;Example:Make;ClientProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

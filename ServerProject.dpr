@@ -3,15 +3,15 @@ program ServerProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  UNetCore in 'UNetCore.pas',
-  UUICore in 'UUICore.pas',
-  IHandlerCore in 'IHandlerCore.pas',
-  UServer in 'UServer.pas',
-  UConnectedClient in 'UConnectedClient.pas',
   Server in 'Server.pas' {ServerForm},
   TestUConnectedClient in 'AutoTests\TestUConnectedClient.pas',
-  UAbstractClient in 'UAbstractClient.pas',
-  UClient in 'UClient.pas';
+  IHandlerCore in 'AppCore\NetCore\IHandlerCore.pas',
+  UAbstractClient in 'AppCore\NetCore\UAbstractClient.pas',
+  UClient in 'AppCore\NetCore\UClient.pas',
+  UConnectedClient in 'AppCore\NetCore\UConnectedClient.pas',
+  UNetCore in 'AppCore\NetCore\UNetCore.pas',
+  UServer in 'AppCore\NetCore\UServer.pas';
+
 {$APPTYPE GUI}
 {$R *.res}
 
